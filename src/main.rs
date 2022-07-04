@@ -5,7 +5,25 @@ fn index() -> &'static str {
     "Hello, world!"
 }
 
-#[launch]
-fn rocket() -> _ {
-    rocket::build().mount("/", routes![index])
+#[get("/hi")]
+fn hi() -> &'static str {
+    r#"
+    Hello fello Rustaceans! I am Madhu :)        
+        \
+         \
+            _~^~^~_
+        \) /  o o  \ (/
+          '_   -   _'
+          / '-----' \"#
+}
+
+#[rocket::main]
+async fn main() -> Result<(), rocket::Error> {
+    let _rocket = rocket::build()
+        .mount("/", routes![index])
+        .mount("/", routes![hi])
+        .launch()
+        .await?;
+
+    Ok(())
 }
